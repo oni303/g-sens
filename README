@@ -6,3 +6,7 @@ some experiments with accelormeters
 
 the goal is to develop intelligent sport equipment
 which improves your training.
+
+realisation for develloping:
+- microControler which captures the accelormeter values and passes them with uart to a PC
+- matlab to analyse the sensor values
