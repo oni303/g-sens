@@ -225,13 +225,78 @@ function ret = korrigiereWerte(werte)
 
 endfunction
 
+function plotKreuzkorrelation()
+	load sample_schleudern.txt;
+	load sample_droppen.txt;
+	load sample_hochwerfen.txt;
+	load demo1.txt;
+
+	demo1 = korrigiereWerte(demo1);
+	sample_schleudern = korrigiereWerte(sample_schleudern);
+	sample_droppen = korrigiereWerte(sample_droppen);
+	sample_hochwerfen = korrigiereWerte(sample_hochwerfen);
+
+	figure
+	hold on
+
+	subplot(5,1,1)
+	%plot(demo1);
+	plot([demo1'; betrag(demo1)']');
+	title("demo1")
+	xlabel("Zeit / n")
+	ylabel("raw value")
+
+	subplot(5,1,2)
+	%plot(sample_hochwerfen);
+	plot([[betrag(sample_droppen); zeros(1,13)']';[betrag(sample_hochwerfen);zeros(10,1)]';[betrag(sample_schleudern)]']');
+	title("sample hochwerfen")
+	xlabel("Zeit / n")
+	ylabel("raw value")
+
+
+	%korrellation zwischen schleudern und demo betrags mäßig
+	subplot(5,1,3)
+	%plot(demo1);
+	plot([fftconv(betrag(demo1), betrag(sample_droppen))']');
+		%;fftconv(betrag(demo1), betrag(sample_hochwerfen))'
+		%;	fftconv(betrag(demo1), betrag(sample_droppen))']');
+	title("korrelation demo droppen")
+	xlabel("Zeit / n")
+	ylabel("raw value")
+
+	%korrellation zwischen schleudern und demo betrags mäßig
+	subplot(5,1,4)
+	%plot(demo1);
+	plot([fftconv(betrag(demo1), betrag(sample_hochwerfen))']');
+		%;fftconv(betrag(demo1), betrag(sample_hochwerfen))'
+		%;	fftconv(betrag(demo1), betrag(sample_droppen))']');
+	title("korrelation demo hochwerfen")
+	xlabel("Zeit / n")
+	ylabel("raw value")
+	
+	%korrellation zwischen schleudern und demo betrags mäßig
+	subplot(5,1,5)
+	%plot(demo1);
+	plot([fftconv(betrag(demo1), betrag(sample_schleudern))']');
+		%;fftconv(betrag(demo1), betrag(sample_hochwerfen))'
+		%;	fftconv(betrag(demo1), betrag(sample_droppen))']');
+	title("korrelation demo schleudern")
+	xlabel("Zeit / n")
+	ylabel("raw value")
+
+	hold off
+
+	printf( "kreuzkorrelation\n")
+
+endfunction
+
 %begin of script
 
 %printOverView();
 %pause
 %firstAnalysis();
 printf( "fertig\n")
-test();
+plotKreuzkorrelation();
 %kalibrieren();
 %load rauschen1.txt;
 %plot(addBetrag(korrigiereWerte(rauschen1)));
